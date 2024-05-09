@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import Modal from './componentts/modal/Modal'
+import useFetch from './hooks/useFetch';
+import Card from './componentts/card/Card';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [modal, setModal] = useState(null)
+    const { data, loading, error } = useFetch();
+
+    return (
+        <div className='app'>
+            {
+                modal && <Modal setModal={setModal} modal={modal} />
+            }
+            <div className="main">
+                {
+                    loading && <h1>Loading...</h1>
+                }
+                {
+                    data.map((post, i) => (
+                        <Card key={i} post={post} setModal={setModal}/>
+                    ))
+                }   
+            </div>
+        </div>
+    )
 }
 
-export default App;
+export default App
